@@ -1,0 +1,302 @@
+(function($) {
+    'use strict';
+    $(window).load(function() {
+//        jQuery(".wprw-question").hide();
+//        jQuery(".wprw-question").slice(0, 1).show();
+        jQuery(".wprw-button-previous").hide();
+        jQuery(".wprw-button-previous").hide();
+        jQuery(".wprw-display-results-button").hide();
+        jQuery(".wprw-start-advisor-button").hide();
+        jQuery(".wprw-scroll-to-results-button").hide();
+
+
+        jQuery('body').on('click', '.wprw-button-next', function(e) {
+            var question_id = jQuery(this).attr('id');
+            var parts = question_id.split('_');
+//            var question_int_id = question_id.substr(question_id.lastIndexOf("_") + 1);
+            var wizard_int_id = parts[1];
+            var question_int_id = parts[3];
+//            alert("current for Next " + wizard_int_id + " " + question_int_id);
+            var allInputs = jQuery("input.wprw-input:input");
+            var allInputs_type = jQuery.trim(allInputs.attr('type'));
+            var current_selected_value = [];
+            if (allInputs_type == 'checkbox') {
+                jQuery('input.wprw-input:checkbox:checked').each(function(i) {
+                    current_selected_value[i] = jQuery(this).val();
+                });
+            }
+            if (allInputs_type == 'radio') {
+                var radioValue = jQuery("input.wprw-input:radio:checked").val();
+                if (radioValue) {
+                    current_selected_value = radioValue;
+                }
+            }
+            var all_selected_value_id = jQuery.trim(jQuery('#all_selected_value_id').val());
+            jQuery.ajax({
+                type: 'POST',
+                url: MyAjax.ajaxurl,
+                data: {
+                    action: "get_next_questions_front_side",
+                    current_wizard_id: wizard_int_id,
+                    current_question_id: question_int_id,
+                    current_selected_value: current_selected_value,
+                    allInputs_type: allInputs_type,
+                    all_selected_value_id: all_selected_value_id
+                },
+                success: function(response) {
+                    //alert(response);
+                    var result = response.split('||');
+                    if (result[0] == 'true') {
+                        jQuery('#test_new').html(result[1]);
+                        var total_selected_value = []
+                        /*Current Selected Value*/
+                        var current_selected_value = jQuery.trim(jQuery('#current_selected_value_id').val());
+                        var split_current_selected_value = current_selected_value.split(',');
+                        if (current_selected_value != '') {
+                            total_selected_value.push(current_selected_value);
+                        }
+                        alert("previous_selected_value" + current_selected_value)
+
+                        /*All Selected Value*/
+                        var all_selected_value_id = jQuery.trim(jQuery('#all_selected_value_id').val());
+                        var split_all_selected_value_id = all_selected_value_id.split(',');
+
+                        if (all_selected_value_id != '') {
+                            total_selected_value.push(all_selected_value_id);
+                        }
+                        alert("all_selected_value_id" + all_selected_value_id)
+
+                        /*Total Selected Value*/
+                        alert("Total Selected Value " + total_selected_value);
+
+                        var result = [];
+                        jQuery.map(split_current_selected_value, function(val, i) {
+                            if (jQuery.inArray(val, total_selected_value) > -1) {
+                                result.push(val);
+                            }
+                        });
+                        alert("result " + result);
+                        var difference = [];
+                        jQuery.grep(split_current_selected_value, function(el) {
+                            if (jQuery.inArray(el, total_selected_value) == -1) {
+                                difference.push(el);
+                            }
+                        });
+                        alert("difference " + difference);
+                        var thelist = jQuery.merge(difference, result);
+                        //alert("Merge " + thelist);
+                        //alert("Unique " + unique(thelist));
+                        var total_selected_value_result = unique(thelist);
+                        if (difference != '') {
+                            alert("total_selected_value_result " + total_selected_value_result);
+
+                            jQuery('#all_selected_value_id').val(total_selected_value_result);
+                            var total_selected_value_with_join = total_selected_value_result.join(',');
+                            var split_val = total_selected_value_with_join.split(',');
+                            jQuery.each(split_val, function(i, val) {
+                                jQuery('#option_value_' + val).prop('checked', true);
+                            });
+                        } else {
+                            alert("total_selected_value " + total_selected_value);
+
+                            jQuery('#all_selected_value_id').val(total_selected_value);
+                            var total_selected_value_with_join = total_selected_value.join(',');
+                            var split_val = total_selected_value_with_join.split(',');
+                            jQuery.each(split_val, function(i, val) {
+                                jQuery('#option_value_' + val).prop('checked', true);
+                            });
+                        }
+//                        jQuery('.wprw-answer-selector').find('input.wprw-input:checkbox').each(function() {
+//                            jQuery(this).prop("checked", (jQuery.inArray(jQuery(this).val(), split_val) != -1));
+//                        });
+                    } else {
+                    }
+                }
+            });
+        });
+
+        jQuery('body').on('click', '.wprw-button-previous', function(e) {
+            var question_id = jQuery(this).attr('id');
+            var parts = question_id.split('_');
+//            var question_int_id = question_id.substr(question_id.lastIndexOf("_") + 1);
+            var wizard_int_id = parts[1];
+            var question_int_id = parts[3];
+            var allInputs = jQuery("input.wprw-input:input");
+            var allInputs_type = jQuery.trim(allInputs.attr('type'));
+            var current_selected_value = [];
+            if (allInputs_type == 'checkbox') {
+                jQuery('input.wprw-input:checkbox:checked').each(function(i) {
+                    current_selected_value[i] = jQuery.trim(jQuery(this).val());
+                });
+            }
+            if (allInputs_type == 'radio') {
+                var radioValue = jQuery.trim(jQuery("input.wprw-input:radio:checked").val());
+                if (radioValue) {
+                    current_selected_value = radioValue;
+                }
+            }
+            var all_selected_value_id = jQuery.trim(jQuery('#all_selected_value_id').val());
+            jQuery.ajax({
+                type: 'POST',
+                url: MyAjax.ajaxurl,
+                data: {
+                    action: "get_previous_questions_front_side",
+                    current_wizard_id: wizard_int_id,
+                    current_question_id: question_int_id,
+                    current_selected_value: current_selected_value,
+                    allInputs_type: allInputs_type,
+                    all_selected_value_id: all_selected_value_id
+                },
+                success: function(response) {
+                    //alert(response);
+                    var result = response.split('||');
+                    if (result[0] == 'true') {
+                        jQuery('#test_new').html(result[1]);
+                        var total_selected_value = []
+                        /*Current Selected Value*/
+                        var current_selected_value = jQuery.trim(jQuery('#current_selected_value_id').val());
+                        var split_current_selected_value = current_selected_value.split(',');
+                        if (current_selected_value != '') {
+                            total_selected_value.push(current_selected_value);
+                        }
+                        alert("previous_selected_value" + current_selected_value)
+
+                        /*All Selected Value*/
+                        var all_selected_value_id = jQuery.trim(jQuery('#all_selected_value_id').val());
+                        var split_all_selected_value_id = all_selected_value_id.split(',');
+
+                        if (all_selected_value_id != '') {
+                            total_selected_value.push(all_selected_value_id);
+                        }
+                        alert("all_selected_value_id" + all_selected_value_id)
+
+                        /*Total Selected Value*/
+                        alert("Total Selected Value " + total_selected_value);
+
+                        var result = [];
+                        jQuery.map(split_current_selected_value, function(val, i) {
+                            if (jQuery.inArray(val, total_selected_value) > -1) {
+                                result.push(val);
+                            }
+                        });
+                        alert("result " + result);
+                        var difference = [];
+                        jQuery.grep(split_current_selected_value, function(el) {
+                            if (jQuery.inArray(el, total_selected_value) == -1) {
+                                difference.push(el);
+                            }
+                        });
+                        alert("difference " + difference);
+                        var thelist = jQuery.merge(difference, result);
+                        //alert("Merge " + thelist);
+                        //alert("Unique " + unique(thelist));
+                        var total_selected_value_result = unique(thelist);
+                        if (difference != '') {
+                            alert("total_selected_value_result " + total_selected_value_result);
+
+                            jQuery('#all_selected_value_id').val(total_selected_value_result);
+                            var total_selected_value_with_join = total_selected_value_result.join(',');
+                            var split_val = total_selected_value_with_join.split(',');
+                            jQuery.each(split_val, function(i, val) {
+                                jQuery('#option_value_' + val).prop('checked', true);
+                            });
+                        } else {
+                            alert("total_selected_value_result " + total_selected_value);
+
+                            jQuery('#all_selected_value_id').val(total_selected_value);
+                            var total_selected_value_with_join = total_selected_value.join(',');
+                            var split_val = total_selected_value_with_join.split(',');
+                            jQuery.each(split_val, function(i, val) {
+                                jQuery('#option_value_' + val).prop('checked', true);
+                            });
+                        }
+//                        jQuery('.wprw-answer-selector').find('input.wprw-input:checkbox').each(function() {
+//                            jQuery(this).prop("checked", (jQuery.inArray(jQuery(this).val(), split_val) != -1));
+//                        });
+                    } else {
+                    }
+                }
+            });
+        });
+
+        function unique(list) {
+            var result = [];
+            jQuery.each(list, function(i, e) {
+                if (jQuery.inArray(e, result) == -1)
+                    result.push(e);
+            });
+            return result;
+        }
+
+        jQuery('body').on('click', 'span.wprw-answer-selector input.wprw-input', function(e) {
+            var input_value = jQuery(this).val();
+            var input_name = jQuery(this).attr('name');
+            var allInputs = jQuery(":input");
+            var allInputs_type = jQuery.trim(allInputs.attr('type'));
+            var selected_value = [];
+            if (allInputs_type == 'checkbox') {
+                jQuery('input.wprw-input:checkbox:checked').each(function(i) {
+                    selected_value[i] = jQuery(this).val();
+                });
+            }
+            if (allInputs_type == 'radio') {
+                var radioValue = jQuery("input.wprw-input:radio:checked").val();
+                if (radioValue) {
+                    selected_value = radioValue;
+                }
+            }
+//            alert(selected_value);
+            jQuery.ajax({
+                type: 'POST',
+                url: MyAjax.ajaxurl,
+                data: {
+                    action: "get_ajax_woocommerce_product_list",
+                    option_id: input_value,
+                    option_name: input_name,
+                    selected_value: selected_value,
+                },
+                success: function(response) {
+//                    alert(response);
+//                    var result = response.split('||');
+//                    if (result[0] == 'true') {
+//                        jQuery('#product_list_id').html(result[1]);
+//                    } else {
+//                    }
+                }
+            });
+        });
+//        jQuery('body').on('click', '.wprw-checkbox span.wprw-answer-selector input.wprw-input', function(e) {
+//            var input_value = jQuery(this).val();
+//            var input_name = jQuery(this).attr('name');
+//            alert(input_value + "  " + input_name);
+//        });
+    });
+    /**
+     * All of the code for your public-facing JavaScript source
+     * should reside in this file.
+     *
+     * Note: It has been assumed you will write jQuery code here, so the
+     * $ function reference has been prepared for usage within the scope
+     * of this function.
+     *
+     * This enables you to define handlers, for when the DOM is ready:
+     *
+     * $(function() {
+     *
+     * });
+     *
+     * When the window is loaded:
+     *
+     * $( window ).load(function() {
+     *
+     * });
+     *
+     * ...and/or other possibilities.
+     *
+     * Ideally, it is not considered best practise to attach more than a
+     * single DOM-ready or window-load handler for a particular page.
+     * Although scripts in the WordPress core, Plugins and Themes may be
+     * practising this, we should strive to set a better example in our own work.
+     */
+
+})(jQuery);

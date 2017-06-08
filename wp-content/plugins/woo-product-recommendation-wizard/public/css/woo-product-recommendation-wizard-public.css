@@ -1,0 +1,274 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+.showing{
+    display: block;
+}
+.hidden{
+    display: none;
+}
+.wprw-answers {
+    list-style: outside none none;
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-top: 15px;
+}
+.wprw-questions {
+    display: block;
+}
+.wprw-question.wprw-mandatory-question {
+    display: block;
+}
+.wprw-answer-content.wprw-answer-selector {
+    display: block;
+    border: 1px solid hsl(0, 0%, 79%);
+}
+.wprw-answer-image.wprw-answer-selector {
+    display: block;
+}
+.wprw-answer.wprw-selected-answer {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 33.33%;
+    margin-bottom: 20px;
+}
+.wprw-desktop-image.wprw-active-image {
+    min-height: 300px;
+}
+#wprw-advisor-wrapper .wprw-topbar .wprw-page .wprw-question .wprw-answers .wprw-answer.wprw-selected-answer .wprw-answer-content .wprw-answer-action {
+    background: #7aaf35;
+}
+.wprw-answer-action{
+    background: #3a3a3c;
+}
+.wprw-answer-action {
+    background: hsl(240, 2%, 23%) none repeat scroll 0 0;
+    padding: 15px;
+    display: block;
+}
+.wprw-answer-selector{
+    color: white;
+}
+
+.wprw-question-text-panel {
+    display: block;
+    padding: 20px;
+    background: #292929;
+}
+.wprw-question-text {
+    display: inline-block;
+    color: #ffda05;
+    font-size: 22px;
+    text-transform: uppercase;
+}
+.wprw-button{
+    padding: 10px 35px 10px 15px;
+    background: #ffda05;
+    display: block;
+}
+.wprw-page-nav-buttons {
+    display: block;
+    margin-top: 10px;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.wprw-page-nav-buttons:after{
+    content: " ";
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 0;
+}
+.wprw-page-nav-buttons:before{
+    content: " ";
+    top: 100%;
+    left: 0;
+    width: 100%;
+}
+.wprw-button.wprw-button-next,.wprw-button.wprw-button-previous {
+    margin-left: 15px;
+    margin-right: 15px;
+    box-shadow: none !important;
+}
+.wprw-button-previous{
+    float: left;
+}
+.wprw-button-next{
+    float: right;
+}
+
+/*Product Section*/
+.test:after{
+    content: " ";
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 0;
+}
+.test:before{
+    content: " ";
+    top: 100%;
+    left: 0;
+}
+.main_all_prd_section:after{
+    content: " ";
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 0;
+}
+.main_all_prd_section:before{
+    content: " ";
+    top: 100%;
+    left: 0;
+}
+.main_all_prd_section {
+    display: block;
+    width: 100%;
+}
+.prd_detail:after{
+    content: " ";
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 0;
+}
+.prd_detail:before{
+    content: " ";
+    top: 100%;
+    left: 0;
+    width: 100%;
+}
+.prd_detail {
+    border: 1px solid hsl(0, 0%, 79%);
+    margin-bottom: 15px;
+    padding: 10px;
+}
+.prd_middle_detail:after{
+    content: " ";
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 0;
+}
+.prd_middle_detail:before{
+    content: " ";
+    top: 100%;
+    left: 0;
+    width: 100%;
+}
+.prd_middle_detail {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: block;
+    /*    margin-left: -15px;
+        margin-right: -15px;*/
+}
+.prd_top_detail {
+    display: block;
+    padding: 10px;
+}
+.prd_image {
+    display: block;
+    float: left;
+    width: 25%;
+}
+.prd_attribute {
+    display: block;
+    float: right;
+    width: 75%;
+}
+.prd_image,.prd_attribute{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.prd_attribute_list {
+    display: block;
+}
+.prd_price {
+    display: block;
+}
+.prd_price:after{
+    content: " ";
+    clear: both;
+    display: block;
+    overflow: hidden;
+    height: 0;
+}
+.prd_price:before{
+    content: " ";
+    top: 100%;
+    left: 0;
+    width: 100%;
+}
+.product-details {
+    display: block;
+    float: right;
+}
+.prd_sale_price {
+    font-weight: bold;
+}
+.wprw-product-price {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.product-details a.wprw-detail-button{
+    padding: 5px 15px;
+    display: inline-block;
+    background: #ffda05;
+    box-shadow: none !important;
+}
+.product-details a.wprw-detail-button span {
+    font-size:17px;
+    color: #292929;
+    text-transform: uppercase;
+}
+
+.main_all_prd_section .wprw-product-headline {
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+    color: #ffda05;
+    text-transform: uppercase;
+    padding: 10px;
+    margin: 10px 0;
+    background: #292929;
+    border: 1px solid #555555;
+}
+/*.wrap {
+    border: 1px solid hsl(0, 100%, 50%);
+}
+.page-description {
+    border: 1px solid;
+}*/
+
+.prd-attribute{
+    display: block;
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 6px;
+    color: #111111;
+    font-family: "Arial";
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 15px;
+}
+.prd_detail .prd-attribute:before {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -8px;
+    font-size: 14px;
+    font-family: "Freemium Icons";
+    line-height: 1;
+}
+.prd_detail .prd-attribute.prd-positive-attr:before {
+    content: "+";
+    color: #008000;
+}
+.prd_detail .prd-attribute.prd-negative-attr:before {
+    content: "-";
+    color: #CECECE;
+}
