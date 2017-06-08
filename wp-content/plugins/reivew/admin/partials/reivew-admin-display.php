@@ -1,16 +1,14 @@
 <?php
 
-/**
- * Provide a admin area view for the plugin
- *
- * This file is used to markup the admin-facing aspects of the plugin.
- *
- * @link       https://www.linkedin.com/in/ajay-ghaghretiya/
- * @since      1.0.0
- *
- * @package    Reivew
- * @subpackage Reivew/admin/partials
- */
+$args = array(
+    'post_id' => 1,
+    'comment_type' => 'author'
+);
+$comments = get_comments($args);
 ?>
+<div class="wrap">
+    <h1> Pending Reviews </h1>
+    
+</div>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
+

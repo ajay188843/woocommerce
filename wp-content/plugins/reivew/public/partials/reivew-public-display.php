@@ -1,6 +1,5 @@
 <?php
 get_header();
-
 ?>
 <style>
 
@@ -56,22 +55,23 @@ if (is_user_logged_in()) {
                 <li class = "comment byuser comment-author-admin bypostauthor even thread-even depth-1" id = "li-comment-33">
                     <?php
                     display_review();
+
                     function display_review() {
-                        $args = array(
-                            //'author_email' => '',
-                            // 'author__in' => '',
-                            // 'author__not_in' => '',
-                            'post_id' => 1,
-                            'comment_type' => 'author'
-                                //'include_unapproved' => '',
-                                //'fields' => '',
-                                //'user_id' => '',
-                                //'comment__in' => '',
-                                // 'comment__not_in' => '',
-                        );
+                        if (is_user_logged_in()) {
+                            $user_id = get_current_user_id();
+                            $args = array(
+                                'post_id' => 1,
+                                'comment_type' => 'author',
+                                'user_id' => $user_id,
+                            );
+                        } else {
+                            $args = array(
+                                'post_id' => 1,
+                                'comment_type' => 'author',
+                                'user_id' => '',
+                            );
+                        }
                         $comments = get_comments($args);
-                        ?>
-                        <?php
                         $count = 1;
                         foreach ($comments as $comment) :
                             $ratings = get_comment_meta($comment->comment_ID, 'rating', TRUE);
@@ -101,8 +101,10 @@ if (is_user_logged_in()) {
                                     </div>
                                 </div>
                             </div>
-        <?php $count++;
-    endforeach; ?> <?php } ?>
+                            <?php
+                            $count++;
+                        endforeach;
+                        ?> <?php } ?>
                 </li>
             </ol>
         </div>
@@ -127,7 +129,7 @@ if (isset($_POST["submit"])) {
             'comment_content' => $author_review,
             'comment_type' => '',
             'comment_parent' => 0,
-            'user_id' => 1,
+            'user_id' => $user_id,
             'comment_author_IP' => '127.0.0.1',
             'comment_agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.10) Gecko/2009042316 Firefox/3.0.10 (.NET CLR 3.5.30729)',
             'comment_date' => $time,
@@ -139,12 +141,10 @@ if (isset($_POST["submit"])) {
         if (isset($id)) {
             update_comment_meta($id, 'rating', $author_rating);
             update_comment_meta($id, 'verified', 0);
-            
         }
-    } 
+    }
 }
 ?>
 
 <?php
-
 get_footer();

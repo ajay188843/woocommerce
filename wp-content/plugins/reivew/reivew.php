@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -77,7 +76,7 @@ function elegance_referal_init() {
     if (is_page('review')) {
         $dir = plugin_dir_path(__FILE__);
         include($dir . "public/partials/reivew-public-display.php");
-        //die();
+        die();
     }
 }
 
@@ -86,17 +85,19 @@ add_action('wp', 'elegance_referal_init');
 add_action('admin_menu', 'my_menu_pages');
 
 function my_menu_pages() {
-add_menu_page('Reviews', 'Reviews Page', 'manage_options', 'my-top-level-slug', 'admin_review_page',plugins_url() . '/reivew/star.png', 45);
-add_submenu_page( 'my-top-level-slug', 'Pending Reviews', 'Pending Reviews', 'manage_options', 'my-top-level-slug');
-add_submenu_page( 'my-top-level-slug', 'Reviews Shortcode', 'Reviews Shortcode', 'manage_options', 'my-secondary-slug', 'admin_shortcode_page');
+    add_menu_page('Reviews', 'Reviews Page', 'manage_options', 'my-top-level-slug', 'admin_review_page', plugins_url() . '/reivew/star.png', 45);
+    add_submenu_page('my-top-level-slug', 'Pending Reviews', 'Pending Reviews', 'manage_options', 'my-top-level-slug');
+    add_submenu_page('my-top-level-slug', 'Reviews Shortcode', 'Reviews Shortcode', 'manage_options', 'my-secondary-slug', 'admin_shortcode_page');
 }
 
 function admin_review_page() {
-    echo "<h2>hello</h2>";
+    include_once 'admin/partials/reivew-admin-display.php';
 }
-function admin_shortcode_page(){
-    echo "<h2>hiii </h2>";
+
+function admin_shortcode_page() {
+    include_once 'admin/partials/review-shortcode.php';
 }
+
 add_action('admin_footer', 'mycss');
 
 function mycss() {
@@ -107,4 +108,63 @@ function mycss() {
     height: 23px;
     width: 27px;
     filter: alpha(opacity=60)' . '</style>';
+}
+
+add_shortcode("review_shortcode", "review_shortcode_func");
+
+function review_shortcode_func($atts) {
+    $atts = shortcode_atts(array(
+        'author' => 'no author',
+            ), $atts, 'review_shortcode');
+    $author = $atts['author'];
+    $args = array(
+        'post_id' => 1,
+        'comment_type' => 'author',
+        'user_id' => $author,
+    );
+    $comments = get_comments($args);
+    ?>
+    <div class = "comments">
+        <h2 class = "woocommerce-Reviews-title">1 review for <span>lenovo G-580</span></h2>
+        <ol class = "commentlist" style = "list-style:none;">
+            <li class = "comment byuser comment-author-admin bypostauthor even thread-even depth-1" id = "li-comment-33">
+                <?php
+                $comments = get_comments($args);
+                $count = 1;
+                foreach ($comments as $comment) :
+                    $ratings = get_comment_meta($comment->comment_ID, 'rating', TRUE);
+                    ?>
+                    <div id = "comment-33" class = "comment_container" style="width: 100%; float: left; margin: 5px;">
+                        <?php echo get_avatar($comment->comment_author_email, 50); ?>
+                        <div class = "comment-text" style = "width: 90%; float: right; padding:8px; border: 1px solid;  border: 1px solid #00aadc; border-radius: 10px">
+                            <div class = "star-rating" style = "float:right;">
+                                <span style = "width:80%">
+                                    <fieldset class = "rating">
+                                        <input type = "radio" id = "star5" name = "rating<?php echo $count; ?>" value = "<?php echo $ratings; ?>" <?php if ($ratings == 5) echo checked; ?>  /><label class = "full" for = "star5" title = "Awesome - 5 stars"></label>
+                                        <input type = "radio" id = "star4" name = "rating<?php echo $count; ?>" value = "<?php echo $ratings; ?>" <?php if ($ratings == 4) echo checked; ?> /><label class = "full" for = "star4" title = "Pretty good - 4 stars"></label>
+                                        <input type = "radio" id = "star3" name = "rating<?php echo $count; ?>" value = "<?php echo $ratings; ?>" <?php if ($ratings == 3) echo checked; ?> /><label class = "full" for = "star3" title = "Meh - 3 stars"></label>
+                                        <input type = "radio" id = "star2" name = "rating<?php echo $count; ?>" value = "<?php echo $ratings; ?>" <?php if ($ratings == 2) echo checked; ?> /><label class = "full" for = "star2" title = "Kinda bad - 2 stars"></label>
+                                        <input type = "radio" id = "star1" name = "rating<?php echo $count; ?>" value = "<?php echo $ratings; ?>" <?php if ($ratings == 1) echo checked; ?> /><label class = "full" for = "star1" title = "Sucks big time - 1 star"></label>
+                                    </fieldset>
+                                    <strong></strong>
+                                </span>
+                            </div>
+                            <p class = "meta">
+                                <strong style = "flot:left;" class = "woocommerce-review__author" itemprop = "author" ><?php echo $comment->comment_author; ?></strong>
+                                <span class = "woocommerce-review__dash">-</span>
+                                <time class = "woocommerce-review__published-date" itemprop = "datePublished" datetime = "2017-05-26T06:54:02+00:00"><?php echo $comment->post_date; ?></time>
+                            </p>
+                            <div class = "description">
+                                <p><?php echo $comment->comment_content; ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                    $count++;
+                endforeach;
+                ?>
+            </li>
+        </ol>
+    </div>
+    <?php
 }
