@@ -138,6 +138,7 @@ if (isset($_POST["submit"])) {
         $id = wp_insert_comment($data);
         if (isset($id)) {
             update_comment_meta($id, 'rating', $author_rating);
+            update_comment_meta($id, 'verified', 0);
             
         }
     } 
