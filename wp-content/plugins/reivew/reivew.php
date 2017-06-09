@@ -116,7 +116,8 @@ function review_shortcode_func($atts) {
     $atts = shortcode_atts(array(
         'author' => 'no author',
             ), $atts, 'review_shortcode');
-    $author = $atts['author'];
+    
+    $author = explode(',', $atts['author']);
     $args = array(
         'post_id' => 1,
         'comment_type' => 'author',
@@ -129,7 +130,6 @@ function review_shortcode_func($atts) {
         <ol class = "commentlist" style = "list-style:none;">
             <li class = "comment byuser comment-author-admin bypostauthor even thread-even depth-1" id = "li-comment-33">
                 <?php
-                $comments = get_comments($args);
                 $count = 1;
                 foreach ($comments as $comment) :
                     $ratings = get_comment_meta($comment->comment_ID, 'rating', TRUE);
