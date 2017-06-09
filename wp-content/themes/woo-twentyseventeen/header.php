@@ -50,4 +50,4 @@
 	?>
 
 	<div class="site-content-contain">
-		<div id="content" class="site-content">
+		<div id="content1" class="site-content">

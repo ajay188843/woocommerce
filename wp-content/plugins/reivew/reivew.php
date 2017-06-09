@@ -168,3 +168,13 @@ function review_shortcode_func($atts) {
     </div>
     <?php
 }
+function my_wp_nav_menu_args( $args = '' ) {
+
+if( is_user_logged_in() ) { 
+	$args['menu'] = 'review';
+} else { 
+	//$args['menu'] = 'logged-out';
+} 
+	return $args;
+}
+add_filter( 'wp_nav_menu_args', 'my_wp_nav_menu_args' );

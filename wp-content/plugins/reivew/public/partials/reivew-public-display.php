@@ -78,7 +78,7 @@ if (is_user_logged_in()) {
                             ?>
                             <div id = "comment-33" class = "comment_container" style="width: 100%; float: left; margin: 5px;">
                                 <?php echo get_avatar($comment->comment_author_email, 50); ?>
-                                <div class = "comment-text" style = "width: 90%; float: right; padding:8px; border: 1px solid;  border: 1px solid #00aadc; border-radius: 10px">
+                                <div class = "comment-text" style = "width: 95%; float: right; padding:8px; border: 1px solid;  border: 1px solid #00aadc; border-radius: 10px">
                                     <div class = "star-rating" style = "float:right;">
                                         <span style = "width:80%">
                                             <fieldset class = "rating">
