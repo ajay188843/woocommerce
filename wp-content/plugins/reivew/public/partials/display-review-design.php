@@ -62,7 +62,7 @@
                 <?php
                 $count++;
             endforeach;
-     $avg_ratings = round($total_ratings / $count);
+            $avg_ratings = round($total_ratings / $count);
             //echo $avg_ratings;
             ?>
         </li>

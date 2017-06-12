@@ -4307,3 +4307,14 @@ div#review-button {
         width: 100%;
     }
 }
+.woocommerce .woocommerce-ordering, .woocommerce .woocommerce-result-count {
+    margin: 0px 2em 1em;
+}
+div#category {
+    margin-top: 11em;
+    /* float: left; */
+}
+div#range-slider {
+    margin-top: 1em;
+    float: left;
+}
