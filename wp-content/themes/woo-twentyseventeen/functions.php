@@ -449,8 +449,12 @@ function twentyseventeen_scripts() {
     }
 
     wp_enqueue_script('twentyseventeen-global', get_theme_file_uri('/assets/js/global.js'), array('jquery'), '1.0', true);
-
-    wp_enqueue_script('theme-woocommerce', get_theme_file_uri('/assets/js/woo-commerce.js'), array('jquery'), '1.0', true);
+    
+    wp_register_script('ajax-js', get_theme_file_uri('/assets/js/woo-commerce.js'), array('jquery'), '', true);
+    wp_localize_script('ajax-js', 'ajax_params', array('ajax_url' => admin_url('admin-ajax.php')));
+    wp_enqueue_script('ajax-js');
+    
+   // wp_enqueue_script('theme-woocommerce', get_theme_file_uri('/assets/js/woo-commerce.js'), array('jquery'), '1.0', true);
 
     wp_enqueue_script('jquery-scrollto', get_theme_file_uri('/assets/js/jquery.scrollTo.js'), array('jquery'), '2.1.2', true);
 
@@ -826,4 +830,18 @@ function update_the_coupon_discount() {
             WC()->cart->add_discount($coupon_code);
         }
     }
+}
+
+add_action('wp_ajax_product_filter_by_price', 'product_filter');
+add_action('wp_ajax_nopriv_product_filter_by_price', 'product_filter');
+
+function product_filter(){
+    $price = $_REQUEST['price'];
+    $price = str_replace("$", "", $price);
+    $price = explode("-", $price);
+    $min_price = intval($price[0]);
+    $max_price = intval($price[1]);
+    
+    
+    exit();
 }

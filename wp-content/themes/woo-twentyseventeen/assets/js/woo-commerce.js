@@ -4,11 +4,13 @@
  * and open the template in the editor.
  */
 jQuery(document).ready(function () {
-    
-jQuery(".woocommerce").on("change",'.qty', function () {
+
+    jQuery(".woocommerce").on("change", '.qty', function () {
         var upd_cart_btn = jQuery("input[name=update_cart]");
         upd_cart_btn.hide();
-       jQuery(".qty").mouseout(function (){ upd_cart_btn.trigger("click"); }); 
+        jQuery(".qty").mouseout(function () {
+            upd_cart_btn.trigger("click");
+        });
     });
     jQuery("#copon_messege1").hide();
     jQuery("#ajax-coupon-redeem").on("click", function () {
@@ -68,28 +70,39 @@ function ajax_for_coupon() {
 function reviewdisplay() {
     jQuery("#review_form_wrapper").toggle();
 }
-jQuery( function() {
-    jQuery( "#slider-range" ).slider({
-      range: true,
-      min: 0,
-      max: 500,
-      change: function() {
-          var val=jQuery("#amount").val();
-          console.log(val);
-      },
-      values: [ 75, 300 ],
-      slide: function( event, ui ) {
-        jQuery( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-      }
+jQuery(function () {
+    jQuery("#slider-range").slider({
+        range: true,
+        min: 0,
+        max: 500,
+        change: function () {
+            var val = jQuery("#amount").val();
+            jQuery.ajax({
+                type: "POST",
+                datatype: "json",
+                url: ajax_params.ajax_url,
+                beforeSend: function () {
+                },
+                data: {action: "product_filter_by_price", "price": val},
+                success: function (data) {
+                    alert(data);
+                }
+            });
+
+        },
+        values: [75, 300],
+        slide: function (event, ui) {
+            jQuery("#amount").val("$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ]);
+        }
     });
-    jQuery( "#amount" ).val( "$" + jQuery( "#slider-range" ).slider( "values", 0 ) +
-      " - $" + jQuery( "#slider-range" ).slider( "values", 1 ) );
-  } );
-  
- jQuery(document).on("change",'#slider-range', function() {
+    jQuery("#amount").val("$" + jQuery("#slider-range").slider("values", 0) +
+            " - $" + jQuery("#slider-range").slider("values", 1));
+});
+
+jQuery(document).on("change", '#slider-range', function () {
 // jQuery("#slider-range").on("change", function() {
     console.log(jQuery(this).val());
-  });
+});
 
-  
- 
+
+
