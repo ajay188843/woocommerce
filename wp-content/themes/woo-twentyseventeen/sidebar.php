@@ -9,7 +9,8 @@
  * @since 1.0
  * @version 1.0
  */
-if (!is_active_sidebar('sidebar-1')) {
+if (!is_active_sidebar('sidebar-1')) 
+    if(is_page('shop')){
     $args = array(
         'orderby' => $orderby,
         'order' => $order,
@@ -34,12 +35,12 @@ if (!is_active_sidebar('sidebar-1')) {
             <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;width: 20%;padding: 0;">
         
 
-        <div id="slider-range" style="width: 20%;float: right;"></div>
+        <div id="slider-range" style="width: 20%;float:right;"></div>
     </div> 
 
-    <?php
+    <?php }
     return;
-}
+
 ?>
 
 <aside id="secondary" class="widget-area" role="complementary">
