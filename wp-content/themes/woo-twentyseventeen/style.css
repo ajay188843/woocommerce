@@ -3419,7 +3419,7 @@ object {
         right: 0;
         top: 0;
         width: 100%;
-        z-index: 7;
+        z-index: 1000;
     }
 
     .admin-bar .site-navigation-fixed.navigation-top {
@@ -4273,6 +4273,7 @@ div#review-button {
     margin: 0;
     font-size: 1em;
     text-align: center;
+    width: 100%;
 }
 .woocommerce ul.products li.product a img {
     width: 100%;

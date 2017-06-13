@@ -395,11 +395,11 @@ function twentyseventeen_colors_css_wrap() {
     $hue = absint(get_theme_mod('colorscheme_hue', 250));
     ?>
     <style type="text/css" id="custom-theme-colors" <?php
-           if (is_customize_preview()) {
-               echo 'data-hue="' . $hue . '"';
-           }
-           ?>>
-               <?php echo twentyseventeen_custom_colors_css(); ?>
+    if (is_customize_preview()) {
+        echo 'data-hue="' . $hue . '"';
+    }
+    ?>>
+    <?php echo twentyseventeen_custom_colors_css(); ?>
     </style>
     <?php
 }
@@ -449,12 +449,9 @@ function twentyseventeen_scripts() {
     }
 
     wp_enqueue_script('twentyseventeen-global', get_theme_file_uri('/assets/js/global.js'), array('jquery'), '1.0', true);
-    
-    wp_register_script('ajax-js', get_theme_file_uri('/assets/js/woo-commerce.js'), array('jquery'), '', true);
-    wp_localize_script('ajax-js', 'ajax_params', array('ajax_url' => admin_url('admin-ajax.php')));
-    wp_enqueue_script('ajax-js');
-    
-   // wp_enqueue_script('theme-woocommerce', get_theme_file_uri('/assets/js/woo-commerce.js'), array('jquery'), '1.0', true);
+
+
+    // wp_enqueue_script('theme-woocommerce', get_theme_file_uri('/assets/js/woo-commerce.js'), array('jquery'), '1.0', true);
 
     wp_enqueue_script('jquery-scrollto', get_theme_file_uri('/assets/js/jquery.scrollTo.js'), array('jquery'), '2.1.2', true);
 
@@ -466,6 +463,18 @@ function twentyseventeen_scripts() {
 }
 
 add_action('wp_enqueue_scripts', 'twentyseventeen_scripts');
+
+function dynamic_values() {
+    global $wpdb;
+    $query = "SELECT max(meta_value) FROM wp_postmeta WHERE meta_key='_sale_price'";
+    $max_price = $wpdb->get_var($query);
+    
+    wp_register_script('ajax-js', get_theme_file_uri('/assets/js/woo-commerce.js'), array('jquery'), '', true);
+    wp_localize_script('ajax-js', 'ajax_params', array('ajax_url' => admin_url('admin-ajax.php'), 'max_price' => 962, 'min_price' => 10));
+    wp_enqueue_script('ajax-js');
+}
+
+add_action('init', 'dynamic_values');
 
 /**
  * Add custom image sizes attribute to enhance responsive image functionality
@@ -835,13 +844,68 @@ function update_the_coupon_discount() {
 add_action('wp_ajax_product_filter_by_price', 'product_filter');
 add_action('wp_ajax_nopriv_product_filter_by_price', 'product_filter');
 
-function product_filter(){
+function product_filter() {
     $price = $_REQUEST['price'];
+    $category = $_REQUEST["category"];
     $price = str_replace("$", "", $price);
     $price = explode("-", $price);
     $min_price = intval($price[0]);
     $max_price = intval($price[1]);
-    
-    
+
+    $params = array(
+        'posts_per_page' => -1,
+        'post_type' => 'product',
+        'post_status' => 'publish'
+    );
+    if (!empty($category)) {
+        $params['tax_query'] = array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field' => 'slug',
+                'terms' => $category,
+            ),
+        );
+    }
+    if (!empty($min_price) && !empty($max_price)) {
+        $params['meta_query'] = array(
+            array(
+                'key' => '_sale_price',
+                'value' => array($min_price, $max_price),
+                'compare' => 'between',
+                'type' => 'numeric',
+            ),
+        );
+    }
+    ?>
+    <?php
+    $loop = new WP_Query($params);
+    while ($loop->have_posts()) : $loop->the_post();
+        global $product;
+        ?>
+        <li class="product">    
+            <h3><?php the_title(); ?></h3>
+            <a href="<?php echo get_permalink($loop->post->ID) ?>" title="<?php echo esc_attr($loop->post->post_title ? $loop->post->post_title : $loop->post->ID); ?>">
+
+                <?php woocommerce_show_product_sale_flash($post, $product); ?>
+
+                <?php
+                if (has_post_thumbnail($loop->post->ID))
+                    echo get_the_post_thumbnail($loop->post->ID, 'shop_catalog');
+                else
+                    echo '<img src="' . woocommerce_placeholder_img_src() . '" alt="Placeholder" width="300px" height="300px" />';
+                ?>
+
+                <span class="price"><?php echo $product->get_price_html(); ?></span>                    
+
+            </a>
+
+            <?php woocommerce_template_loop_add_to_cart($loop->post, $product); ?>
+
+        </li>
+
+    <?php endwhile; ?>
+    <?php wp_reset_query(); ?>
+
+    <?php
     exit();
 }

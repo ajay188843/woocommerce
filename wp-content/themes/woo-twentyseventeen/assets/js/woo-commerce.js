@@ -71,21 +71,24 @@ function reviewdisplay() {
     jQuery("#review_form_wrapper").toggle();
 }
 jQuery(function () {
-    jQuery("#slider-range").slider({
+    
+   jQuery("#slider-range").slider({
         range: true,
-        min: 0,
-        max: 500,
+        min: 5,
+        max: ajax_params.max_price,
         change: function () {
             var val = jQuery("#amount").val();
+            var cat = jQuery("#category option:selected").val();
+           
             jQuery.ajax({
                 type: "POST",
                 datatype: "json",
                 url: ajax_params.ajax_url,
                 beforeSend: function () {
                 },
-                data: {action: "product_filter_by_price", "price": val},
+                data: {action: "product_filter_by_price", "price": val, "category": cat},
                 success: function (data) {
-                    alert(data);
+                    jQuery("ul.products").html(data);
                 }
             });
 

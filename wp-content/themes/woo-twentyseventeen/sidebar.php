@@ -10,7 +10,7 @@
  * @version 1.0
  */
 if (!is_active_sidebar('sidebar-1')) 
-    if(is_page('shop')){
+    if(is_shop()){
     $args = array(
         'orderby' => $orderby,
         'order' => $order,
@@ -24,7 +24,7 @@ if (!is_active_sidebar('sidebar-1'))
     <div id="ajax-filter">
         <div id='category'> Select Category : 
             <select name='category' id="category">
-                <option> Select Category </option>
+                <option value=""> Select Category </option>
                 <?php foreach ($categories as $category) : ?> 
                     <option value="<?php echo $category->slug; ?>"> <?php echo $category->name; ?> </option>
                 <?php endforeach; ?>
