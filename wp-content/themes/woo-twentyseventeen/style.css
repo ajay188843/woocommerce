@@ -4265,6 +4265,7 @@ div#review-button {
     margin: 0 3.8% 2.992em 0;
     padding: 0;
     position: relative;
+    height: 375px;
     width: 21.05%;
     border: 2px solid darkgreen;
 }
@@ -4319,3 +4320,4 @@ div#range-slider {
     margin-top: 1em;
     float: left;
 }
+

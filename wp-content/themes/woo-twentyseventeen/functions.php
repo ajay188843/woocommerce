@@ -470,7 +470,7 @@ function dynamic_values() {
     $max_price = $wpdb->get_var($query);
     
     wp_register_script('ajax-js', get_theme_file_uri('/assets/js/woo-commerce.js'), array('jquery'), '', true);
-    wp_localize_script('ajax-js', 'ajax_params', array('ajax_url' => admin_url('admin-ajax.php'), 'max_price' => 962, 'min_price' => 10));
+    wp_localize_script('ajax-js', 'ajax_params', array('ajax_url' => admin_url('admin-ajax.php'), 'max_price' => $max_price, 'min_price' => 10));
     wp_enqueue_script('ajax-js');
 }
 
@@ -854,7 +854,7 @@ function product_filter() {
 
     $params = array(
         'posts_per_page' => -1,
-        'post_type' => 'product',
+        'post_type' => array('product','product_variation'),
         'post_status' => 'publish'
     );
     if (!empty($category)) {

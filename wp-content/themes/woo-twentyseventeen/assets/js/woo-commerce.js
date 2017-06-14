@@ -85,10 +85,14 @@ jQuery(function () {
                 datatype: "json",
                 url: ajax_params.ajax_url,
                 beforeSend: function () {
+                    jQuery("ul.products").css("opacity",0.2);
+                    jQuery("#loading-img").show();
                 },
                 data: {action: "product_filter_by_price", "price": val, "category": cat},
                 success: function (data) {
+                    jQuery("ul.products").css("opacity", 1);
                     jQuery("ul.products").html(data);
+                    jQuery("#loading-img").hide();
                 }
             });
 
